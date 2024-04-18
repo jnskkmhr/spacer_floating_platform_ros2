@@ -1,4 +1,4 @@
-FROM osrf/ros:foxy-desktop
+FROM nnvidiajetson/l4t-ros2-foxy
 
 # Standard package
 RUN apt-get update && apt-get install -y git vim wget byobu zip unzip

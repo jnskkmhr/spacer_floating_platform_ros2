@@ -6,12 +6,12 @@ from launch_ros.actions import Node
 def generate_launch_description():
     ls = LaunchDescription()
     config = os.path.join(
-        get_package_share_directory('soacer_floating_platform'),
+        get_package_share_directory('floating_platform_control'),
         'config',
         'fp_config.yaml'
         )
     fp_node = Node(
-            package='spacer_floating_platform',
+            package='floating_platform_control',
             executable='FloatingPlatformDirectValveControl',
             name='FloatingPlatformDirectValveControl',
             output='screen',

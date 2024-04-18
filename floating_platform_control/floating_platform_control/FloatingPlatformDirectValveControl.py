@@ -5,15 +5,21 @@ import Jetson.GPIO as GPIO
 # rclpy lib
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import ByteMultiArray
+from std_msgs.msg import Int32MultiArray
 
 class FloatingPlatformGPIO:
-    def __init__(self, gpio_ids: List[int]):
+    def __init__(self, gpio_ids: List[int])->None:
+        """
+        gpio_ids (List[int]): List of GPIO pin numbers.
+        """
         self.gpio_setup(gpio_ids)
 
-    def gpio_setup(self, gpio_ids: List[int]):
+    def gpio_setup(self, gpio_ids: List[int])->None:
+        """
+        gpio_ids (List[int]): List of GPIO pin numbers.
+        """
         GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM) # @todo Clarify this function call
+        GPIO.setmode(GPIO.BOARD)
         
         self.gpio_ids = gpio_ids
 
@@ -24,11 +30,18 @@ class FloatingPlatformGPIO:
         GPIO.cleanup()
 
     def valves(self, valve_ids, states):
+        """
+        valve_ids (List[int]): List of GPIO pin numbers.
+        states (List[int]): List of states (0 or 1).
+        """
         print(states)
         GPIO.output(valve_ids, [1 - i for i in states])
 
 class FloatingPlatformDirectValveControl(Node):
     def __init__(self):
+        """
+        GPIO pins (List[int]): (air-bearing, valve1, valve2, valve3, valve4, valve5, valve6, valve7, valve8)
+        """
         super().__init__('fp_valve_control_node')
         # Register parameter
         self.register_param()
@@ -36,13 +49,13 @@ class FloatingPlatformDirectValveControl(Node):
         self.gpio = FloatingPlatformGPIO(self.get_param("gpio_ids"))
         self.gpio.valves(self.gpio.gpio_ids, [0,0,0,0,0,0,0,0,0])
         # Register subscriber
-        self.subscriber = self.create_subscription(ByteMultiArray, self.get_param("topic_name"), self.valve_callback, 10)
+        self.subscriber = self.create_subscription(Int32MultiArray, self.get_param("topic_name"), self.valve_callback, 10)
     
     def register_param(self):
         """
         Register rosparams.
         """
-        self.declare_parameter('topic_name', rclpy.Parameter.Type.STRING, "valves/input")
+        self.declare_parameter('topic_name', rclpy.Parameter.Type.STRING)
         self.declare_parameter('gpio_ids', rclpy.Parameter.Type.INTEGER_ARRAY)
     
     def get_param(self, name):
@@ -51,7 +64,7 @@ class FloatingPlatformDirectValveControl(Node):
         Args:
             name (str): name of parameter.
         """
-        return self.get_parameter(name).get_parameter_value().string_value
+        return self.get_parameter(name).value
         
     def valve_callback(self, msg):
         """

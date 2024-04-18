@@ -1,5 +1,5 @@
 vrpn_client_node:
-  ros_parameters:
+  ros__parameters:
     server: '192.168.88.13'
     port: '3883'
     update_frequency: 25.0
