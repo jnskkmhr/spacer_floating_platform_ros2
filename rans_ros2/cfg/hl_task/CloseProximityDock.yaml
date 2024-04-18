@@ -1,0 +1,8 @@
+name: "dock"
+run_batch: 0
+goals_x: [2.5]
+goals_y: [-1.5]
+goals_theta: [0.0]
+position_distance_threshold: 0.03
+orientation_distance_threshold: 0.03
+save_dir: "src/rans_ros/logs/docking"

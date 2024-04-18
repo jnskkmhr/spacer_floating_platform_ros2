@@ -1,0 +1,4 @@
+FloatingPlatformDirectValveControl:
+  ros_parameters:
+    topic_name: 'valves/input'
+    gpio_ids: [17, 6, 24, 5, 25, 16, 27, 22, 23]
