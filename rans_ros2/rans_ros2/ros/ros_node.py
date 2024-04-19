@@ -2,15 +2,14 @@
 from typing import Callable, NamedTuple, Optional, Union, List, Dict
 from collections import deque
 import numpy as np
-import datetime
 import torch
 import os
 
 # ros2 lib
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import ByteMultiArray
-from geometry_msgs.msg import PoseStamped, Point, Pose
+from std_msgs.msg import Int16MultiArray
+from geometry_msgs.msg import PoseStamped
 
 from ros.ros_utils import derive_velocities
 from mujoco_envs.controllers.hl_controllers import (
@@ -73,21 +72,37 @@ class RLPlayerNode(Node):
         # Initialize Subscriber and Publisher
         # TODO: topic name should be ros parameter?
         self.pos_sub = self.create_subscription(PoseStamped, 
-                                                "/vrpn_client_node/FP_exp_RL/pose", 
+                                                self.get_param('state_pose_topic'), 
                                                 self.pose_callback, 
                                                 10)
         
-        self.goal_sub = self.create_subscription(Point, 
-                                                "/spacer_floating_platform/goal", 
+        self.goal_sub = self.create_subscription(PoseStamped, 
+                                                self.get_param('goal_pose_topic'), 
                                                 self.goal_callback, 
                                                 10)
         
-        self.action_pub = self.create_publisher(ByteMultiArray, 
-                                                "/spacer_floating_platform/valves/input", 
+        self.action_pub = self.create_publisher(Int16MultiArray, 
+                                                self.get_param('action_topic'), 
                                                 10)
 
         # Initialize ROS message for thrusters
-        self.thruster_msg = ByteMultiArray()
+        self.thruster_msg = Int16MultiArray()
+    
+    def register_param(self):
+        """
+        Register rosparams.
+        """
+        self.declare_parameter('state_pose_topic', rclpy.Parameter.Type.STRING)
+        self.declare_parameter('goal_pose_topic', rclpy.Parameter.Type.STRING)
+        self.declare_parameter('action_topic', rclpy.Parameter.Type.STRING)
+    
+    def get_param(self, name):
+        """
+        Retrieve parameter value given its name.
+        Args:
+            name (str): name of parameter.
+        """
+        return self.get_parameter(name).value
     
     def on_shutdown(self):
         """
@@ -137,7 +152,7 @@ class RLPlayerNode(Node):
 
         return [actions[i] for i in self.map]
 
-    def pose_callback(self, msg: Pose) -> None:
+    def pose_callback(self, msg: PoseStamped) -> None:
         """
         Callback for the pose topic. It updates the state of the agent.
 
@@ -155,12 +170,12 @@ class RLPlayerNode(Node):
             self.get_state_from_optitrack(msg)
             self.ready = True
 
-    def get_state_from_optitrack(self, msg: Pose) -> None:
+    def get_state_from_optitrack(self, msg: PoseStamped) -> None:
         """
         Converts a ROS message to an observation.
 
         Args:
-            msg (Pose): The pose message."""
+            msg (PoseStamped): The pose message."""
 
         pos = msg.pose.position
         quat = msg.pose.orientation
@@ -170,14 +185,18 @@ class RLPlayerNode(Node):
             self.time_buffer, self.pose_buffer
         )
 
-    def goal_callback(self, msg: Point) -> None:
+    def goal_callback(self, msg: PoseStamped) -> None:
         """
         Callback for the goal topic. It updates the task data with the new goal data.
 
         Args:
-            msg (Point): The goal message."""
-
-        self.hl_controller.setGoal(np.array([msg.x, msg.y, msg.z]))
+            msg (PoseStamped): The goal message."""
+        pos = msg.pose.position
+        quat = msg.pose.orientation
+        x, y = pos.x, pos.y
+        qx, qy, qz, qw = quat.x, quat.y, quat.z, quat.w
+        z = np.arctan2(2*(qw*qz + qx*qy), 1 - 2*(qy**2 + qz**2))
+        self.hl_controller.setGoal(np.array([x, y, z]))
 
     def get_action(self, run_time: float, lifting_active: int = 1) -> None:
         """
@@ -188,7 +207,8 @@ class RLPlayerNode(Node):
         """
         self.state = self.getObs()
         self.action = self.hl_controller.getAction(self.state, time=run_time)
-        action = self.remap_actions(self.action)
+        # action = self.remap_actions(self.action)
+        action = self.action
         lifting_active = 1
         action.insert(0, lifting_active)
         self.thruster_msg.data = action

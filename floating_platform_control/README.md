@@ -11,7 +11,7 @@ Then install dependencies via rosdep and build package.
 ```bash
 cd {/path/to/ros2_ws}
 rosdep init && rosdep install --from-paths src -yi
-colcon build
+colcon build --symlink-install
 ```
 
 ## 2. Launch node

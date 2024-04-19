@@ -5,7 +5,7 @@ import Jetson.GPIO as GPIO
 # rclpy lib
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Int32MultiArray
+from std_msgs.msg import Int16MultiArray
 
 class FloatingPlatformGPIO:
     def __init__(self, gpio_ids: List[int])->None:
@@ -49,7 +49,7 @@ class FloatingPlatformDirectValveControl(Node):
         self.gpio = FloatingPlatformGPIO(self.get_param("gpio_ids"))
         self.gpio.valves(self.gpio.gpio_ids, [0,0,0,0,0,0,0,0,0])
         # Register subscriber
-        self.subscriber = self.create_subscription(Int32MultiArray, self.get_param("topic_name"), self.valve_callback, 10)
+        self.subscriber = self.create_subscription(Int16MultiArray, self.get_param("topic_name"), self.valve_callback, 10)
     
     def register_param(self):
         """
