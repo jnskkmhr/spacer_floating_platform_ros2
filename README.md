@@ -7,6 +7,23 @@ We have following packages:
 ## docker container
 We support docker to run ros nodes.
 
+Before you start, make sure your default docker runtime is nvidia.
+Open `/etc/docker/daemon.json` and edit it like the following.
+
+```json
+{
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+
+    "default-runtime": "nvidia"
+}
+```
+
+Then, build docker image and run container.
 ```bash
 cd {/path/to/this/package}
 ./docker/build_docker.sh

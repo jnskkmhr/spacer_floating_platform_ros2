@@ -1,4 +1,4 @@
-FROM nnvidiajetson/l4t-ros2-foxy
+FROM dustynv/ros:foxy-desktop-l4t-r32.7.1
 
 # Standard package
 RUN apt-get update && apt-get install -y git vim wget byobu zip unzip

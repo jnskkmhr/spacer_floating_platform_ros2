@@ -1,6 +1,6 @@
 # std lib
 from typing import List
-import Jetson.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 # rclpy lib
 import rclpy
@@ -8,11 +8,17 @@ from rclpy.node import Node
 from std_msgs.msg import Int16MultiArray
 
 class FloatingPlatformGPIO:
-    def __init__(self, gpio_ids: List[int])->None:
+    def __init__(self, device:str="jetson", gpio_ids: List[int]=None)->None:
         """
         gpio_ids (List[int]): List of GPIO pin numbers.
         """
         self.gpio_setup(gpio_ids)
+        if device == "jetson":
+            import Jetson.GPIO as GPIO
+        elif device == "rpi":
+            import RPi.GPIO as GPIO
+        else:
+            raise ValueError("Invalid device. Choose either 'jetson' or 'rpi'.")
 
     def gpio_setup(self, gpio_ids: List[int])->None:
         """
@@ -46,7 +52,7 @@ class FloatingPlatformDirectValveControl(Node):
         # Register parameter
         self.register_param()
         # Initialize GPIO and valve
-        self.gpio = FloatingPlatformGPIO(self.get_param("gpio_ids"))
+        self.gpio = FloatingPlatformGPIO(self.get_param("device"), self.get_param("gpio_ids"))
         self.gpio.valves(self.gpio.gpio_ids, [0,0,0,0,0,0,0,0,0])
         # Register subscriber
         self.subscriber = self.create_subscription(Int16MultiArray, self.get_param("topic_name"), self.valve_callback, 10)
@@ -56,6 +62,7 @@ class FloatingPlatformDirectValveControl(Node):
         Register rosparams.
         """
         self.declare_parameter('topic_name', rclpy.Parameter.Type.STRING)
+        self.declare_parameter('device', rclpy.Parameter.Type.STRING)
         self.declare_parameter('gpio_ids', rclpy.Parameter.Type.INTEGER_ARRAY)
     
     def get_param(self, name):

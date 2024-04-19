@@ -1,5 +1,6 @@
 spacer_floating_platform:
   FloatingPlatformDirectValveControl:
     ros__parameters:
+      device: 'jetson'
       topic_name: 'valves/input'
-      gpio_ids: [7, 15, 24, 5, 29, 16, 27, 22, 23]
+      gpio_ids: [15, 7, 24, 26, 31, 29, 23, 21, 19]
