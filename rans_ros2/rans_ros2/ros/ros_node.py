@@ -11,14 +11,14 @@ from rclpy.node import Node
 from std_msgs.msg import Int16MultiArray
 from geometry_msgs.msg import PoseStamped
 
-from ros.ros_utils import derive_velocities
-from mujoco_envs.controllers.hl_controllers import (
+from rans_ros2.ros.ros_utils import derive_velocities
+from rans_ros2.mujoco_envs.controllers.hl_controllers import (
     PoseController,
     PositionController,
     VelocityTracker,
     DockController,
 )
-from mujoco_envs.environments.disturbances import (
+from rans_ros2.mujoco_envs.environments.disturbances import (
     RandomKillThrusters,
     Disturbances,
 )
@@ -41,7 +41,7 @@ class RLPlayerNode(Node):
         """
         
         super().__init__('RL_player')
-
+        self.cfg = cfg
         platform = cfg["task"]["env"]["platform"]
         disturbances = cfg["task"]["env"]["disturbances"]
         self.play_rate = 1 / (
@@ -70,39 +70,22 @@ class RLPlayerNode(Node):
         self.reset()
 
         # Initialize Subscriber and Publisher
-        # TODO: topic name should be ros parameter?
         self.pos_sub = self.create_subscription(PoseStamped, 
-                                                self.get_param('state_pose_topic'), 
+                                                self.cfg['ros']['state_pose_topic'], 
                                                 self.pose_callback, 
                                                 10)
         
         self.goal_sub = self.create_subscription(PoseStamped, 
-                                                self.get_param('goal_pose_topic'), 
+                                                self.cfg['ros']['goal_pose_topic'], 
                                                 self.goal_callback, 
                                                 10)
         
         self.action_pub = self.create_publisher(Int16MultiArray, 
-                                                self.get_param('action_topic'), 
+                                                self.cfg['ros']['action_topic'], 
                                                 10)
 
         # Initialize ROS message for thrusters
         self.thruster_msg = Int16MultiArray()
-    
-    def register_param(self):
-        """
-        Register rosparams.
-        """
-        self.declare_parameter('state_pose_topic', rclpy.Parameter.Type.STRING)
-        self.declare_parameter('goal_pose_topic', rclpy.Parameter.Type.STRING)
-        self.declare_parameter('action_topic', rclpy.Parameter.Type.STRING)
-    
-    def get_param(self, name):
-        """
-        Retrieve parameter value given its name.
-        Args:
-            name (str): name of parameter.
-        """
-        return self.get_parameter(name).value
     
     def on_shutdown(self):
         """

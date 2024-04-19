@@ -1,4 +1,3 @@
-
 # Task name - used to pick the class to load
 task_name: ${task.name}
 # experiment name. defaults to name of training config
@@ -29,53 +28,22 @@ rl_device: 'cuda:0'
 multi_gpu: False
 
 ## PhysX arguments
-num_threads: 4 # Number of worker threads used by PhysX - for CPU PhysX only.
+num_threads: 4 # Number of worker threads per scene used by PhysX - for CPU PhysX only.
 solver_type: 1 # 0: pgs, 1: tgs
 
-# RLGames Arguments
-# test - if set, run policy in inference mode (requires setting checkpoint to load)
-test: False
 # used to set checkpoint path
 checkpoint: ''
-# evaluate checkpoint
-evaluation: False
-
-# disables rendering
-headless: False
-# enables native livestream
-enable_livestream: False
-# timeout for MT script
-mt_timeout: 300
-
-# enables viewport recording
-enable_recording: False
-# interval between video recordings (in steps)
-recording_interval: 2000
-# length of the recorded video (in steps)
-recording_length: 100
-# fps for writing recorded video
-recording_fps: 30
-# directory to save recordings in
-recording_dir: ''
 
 wandb_activate: False
-wandb_group: ''
-wandb_name: ${train.params.config.name}
-wandb_entity: ''
-wandb_project: 'omniisaacgymenvs'
-
-# path to a kit app file
-kit_app: ''
-
-# Warp
-warp: False
+use_rl: True
 
 # set default task and default training config based on task
 defaults:
-  - _self_
-  - task: Cartpole
-  - train: ${task}PPO
-  - override hydra/job_logging: disabled
+  - task: virtual_floating_platform/MFP2D_Virtual_GoToXY
+  - train: virtual_floating_platform/MFP2D_PPOmulti_dict_MLP
+  - controller: Optimal_LQR_DC
+  - hl_task: GoToXY_Square
+  - hydra/job_logging: disabled
 
 # set the directory where the output files get saved
 hydra:
@@ -83,3 +51,7 @@ hydra:
   run:
     dir: .
 
+ros:
+  state_pose_topic: /spacer_floating_platform/pose
+  goal_pose_topic: /spacer_goal_platform/pose
+  action_topic: /spacer_floating_platform/valves/input

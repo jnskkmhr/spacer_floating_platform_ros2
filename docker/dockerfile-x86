@@ -1,16 +1,32 @@
 FROM osrf/ros:foxy-desktop
 
 # Standard package
-RUN apt-get update && apt-get install -y git vim wget byobu zip unzip
-
-# Python dependencies
-RUN apt-get install -y python3-tk
+RUN apt-get update && apt-get install -y git vim wget curl byobu zip unzip
 
 # ROS build dependencies
 RUN apt-get update && apt-get install -y python3-colcon-common-extensions python3-rosdep
 
-# Other thirdparty packages
+# Python dependencies
+RUN apt-get install -y python3-pip python3-tk
+
+# Python package
+RUN pip3 install cvxpy hydra-core omegaconf mujoco
+
+# Other thirdparty python packages
 WORKDIR /home/thirdparty
 RUN git clone https://github.com/AntoineRichard/rl_games.git
+WORKDIR /home/thirdparty/rl_games
+RUN pip3 install -e .
 
-WORKDIR /home
+# realsense driver
+# RUN apt-get install apt-transport-https
+# RUN mkdir -p /etc/apt/keyrings
+# RUN curl -sSf https://librealsense.intel.com/Debian/librealsense.pgp | sudo tee /etc/apt/keyrings/librealsense.pgp > /dev/null
+# RUN echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.intel.com/Debian/apt-repo `lsb_release -cs` main"
+# RUN tee /etc/apt/sources.list.d/librealsense.list
+# RUN apt-get update && apt-get install -y librealsense2-dkms librealsense2-utils
+
+# extra ROS packages
+RUN apt-get install -y ros-foxy-realsense2-* ros-foxy-vrpn-mocap
+
+WORKDIR /home/ros2_ws

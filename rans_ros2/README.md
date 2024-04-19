@@ -24,6 +24,7 @@ colcon build --symlink-install
 download weight
 ```bash
 cd /home/ros2_ws/src/spacer_floating_platform_ros2/rans_ros2
+https://drive.google.com/file/d/1M_zCYP5VczzJq0TZ1VaAcsgRxW2v_Wcf/view?usp=drive_link
 wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1M_zCYP5VczzJq0TZ1VaAcsgRxW2v_Wcf' -O runs.zip
 unzip runs.zip && rm runs.zip
 ```

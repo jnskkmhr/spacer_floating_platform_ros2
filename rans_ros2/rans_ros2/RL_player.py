@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# coding: utf-8
-
 __author__ = "Antoine Richard, Matteo El Hariry"
 __copyright__ = (
     "Copyright 2023-24, Space Robotics Lab, SnT, University of Luxembourg, SpaceR"
@@ -12,8 +9,8 @@ __email__ = "antoine.richard@uni.lu"
 __status__ = "development"
 
 # std lib
-from utils.reformat import omegaconf_to_dict, print_dict
-from utils.hydra_utils import *
+from rans_ros2.utils.reformat import omegaconf_to_dict, print_dict
+from rans_ros2.utils.hydra_utils import *
 from omegaconf import DictConfig, OmegaConf
 import hydra
 import os
@@ -22,23 +19,23 @@ import os
 import rclpy
 
 # custom lib
-from mujoco_envs.controllers.discrete_LQR_controller import (
+from rans_ros2.mujoco_envs.controllers.discrete_LQR_controller import (
     DiscreteController,
     parseControllerConfig,
 )
-from mujoco_envs.controllers.RL_games_model_4_mujoco import (
+from rans_ros2.mujoco_envs.controllers.RL_games_model_4_mujoco import (
     RLGamesModel,
 )
-from mujoco_envs.environments.mujoco_base_env import (
+from rans_ros2.mujoco_envs.environments.mujoco_base_env import (
     MuJoCoFloatingPlatform,
     parseEnvironmentConfig,
 )
-from mujoco_envs.controllers.hl_controllers import hlControllerFactory
-from ros.ros_node import RLPlayerNode
+from rans_ros2.mujoco_envs.controllers.hl_controllers import hlControllerFactory
+from rans_ros2.ros.ros_node import RLPlayerNode
 
 
-@hydra.main(config_name="config_mujoco", config_path="cfg")
-def run(cfg: DictConfig):
+@hydra.main(config_name="config", config_path="cfg")
+def main(cfg: DictConfig):
     """ "
     Run the simulation.
 
@@ -87,5 +84,4 @@ def run(cfg: DictConfig):
     hl_controller.plotSimulation()
 
 if __name__ == "__main__":
-    # Initialize ROS node
-    run()
+    main()

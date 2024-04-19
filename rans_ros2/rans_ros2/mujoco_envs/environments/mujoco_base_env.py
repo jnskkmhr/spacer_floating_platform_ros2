@@ -16,7 +16,7 @@ import mujoco
 import math
 import os
 
-from mujoco_envs.environments.disturbances import (
+from rans_ros2.mujoco_envs.environments.disturbances import (
     Disturbances,
     RandomKillThrusters,
     RandomSpawn,

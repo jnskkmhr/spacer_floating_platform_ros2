@@ -16,10 +16,10 @@ import numpy as np
 import os
 import datetime
 
-from mujoco_envs.controllers.discrete_LQR_controller import (
+from rans_ros2.mujoco_envs.controllers.discrete_LQR_controller import (
     DiscreteController,
 )
-from mujoco_envs.controllers.RL_games_model_4_mujoco import (
+from rans_ros2.mujoco_envs.controllers.RL_games_model_4_mujoco import (
     RLGamesModel,
 )
 

@@ -9,7 +9,7 @@ __email__ = "antoine.richard@uni.lu"
 __status__ = "development"
 
 from dataclasses import dataclass, field
-from mujoco_envs.environments.curriculum_helpers import (
+from rans_ros2.mujoco_envs.environments.curriculum_helpers import (
     CurriculumParameters,
 )
 

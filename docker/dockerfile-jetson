@@ -1,16 +1,31 @@
 FROM dustynv/ros:foxy-desktop-l4t-r32.7.1
 
 # Standard package
-RUN apt-get update && apt-get install -y git vim wget byobu zip unzip
-
-# Python dependencies
-RUN apt-get install -y python3-tk
+RUN apt-get update && apt-get install -y git vim wget curl byobu zip unzip
 
 # ROS build dependencies
 RUN apt-get update && apt-get install -y python3-colcon-common-extensions python3-rosdep
 
-# Other thirdparty packages
+# Python dependencies
+RUN apt-get install -y python3-pip python3-tk
+
+# Python package
+RUN pip3 install cvxpy hydra-core omegaconf mujoco
+
+# Other thirdparty python packages
 WORKDIR /home/thirdparty
 RUN git clone https://github.com/AntoineRichard/rl_games.git
+WORKDIR /home/thirdparty/rl_games
+RUN pip3 install -e .
 
-WORKDIR /home
+# Get realsense driver for jetson
+RUN apt-key adv --keyserver keyserver.ubuntu.com \
+--recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
+--recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+RUN add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" -u
+RUN apt-get install -y librealsense2-utils librealsense2-dev
+
+# Get extra ROS packages
+RUN apt install -y ros-foxy-realsense2-* ros-foxy-vrpn-mocap
+
+WORKDIR /home/ros2_ws

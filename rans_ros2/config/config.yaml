@@ -1,5 +1,0 @@
-RL_player:
-  ros__parameter:
-    state_pose_topic: "/spacer_floating_platform/pose"
-    goal_pose_topic: "/spacer_goal_platform/pose"
-    action_topic: "/spacer_floating_platform/valves/input"

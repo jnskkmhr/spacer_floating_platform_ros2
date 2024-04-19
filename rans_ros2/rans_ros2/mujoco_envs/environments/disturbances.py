@@ -12,7 +12,7 @@ from typing import Dict, Tuple
 import numpy as np
 import math
 
-from mujoco_envs.environments.MFP2D_disturbances_parameters import (
+from rans_ros2.mujoco_envs.environments.MFP2D_disturbances_parameters import (
     DisturbancesParameters,
     MassDistributionDisturbanceParameters,
     ForceDisturbanceParameters,
@@ -21,7 +21,7 @@ from mujoco_envs.environments.MFP2D_disturbances_parameters import (
     NoisyActionsParameters,
 )
 
-from mujoco_envs.environments.curriculum_helpers import (
+from rans_ros2.mujoco_envs.environments.curriculum_helpers import (
     CurriculumSampler,
 )
 

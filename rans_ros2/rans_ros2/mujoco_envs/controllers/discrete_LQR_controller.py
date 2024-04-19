@@ -14,7 +14,7 @@ import numpy as np
 import mujoco
 import cvxpy as cp
 
-from mujoco_envs.environments.mujoco_base_env import (
+from rans_ros2.mujoco_envs.environments.mujoco_base_env import (
     MuJoCoFloatingPlatform,
 )
 
