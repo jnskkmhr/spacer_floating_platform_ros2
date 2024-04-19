@@ -26,7 +26,8 @@ Open `/etc/docker/daemon.json` and edit it like the following.
 Then, build docker image and run container.
 ```bash
 cd {/path/to/this/package}
-./docker/build_docker.sh
+./docker/build_docker.sh jetson # on jetson
+./docker/build_docker.sh x86 # x86 computer
 ./docker/run_docker.sh
 ```
 

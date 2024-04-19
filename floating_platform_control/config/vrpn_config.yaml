@@ -2,7 +2,7 @@ spacer_floating_platform:
   vrpn_client_node:
     ros__parameters:
       server: '192.168.88.13'
-      port: '3883'
+      port: 3883
       update_frequency: 25.0
       frame_id: 'world'
       use_server_time: False
