@@ -1,3 +1,6 @@
+# for x86
+FROM osrf/ros:foxy-desktop
+# for jetson
 FROM dustynv/ros:foxy-desktop-l4t-r32.7.1
 
 # Standard package
