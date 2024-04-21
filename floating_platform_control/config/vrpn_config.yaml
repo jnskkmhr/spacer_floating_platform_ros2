@@ -1,5 +1,5 @@
-spacer_floating_platform:
-  vrpn_client_node:
+spacer_floating_platform: #namespace
+  vrpn_client_node: #node name
     ros__parameters:
       server: '192.168.88.13'
       port: 3883

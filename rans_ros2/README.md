@@ -24,7 +24,6 @@ colcon build --symlink-install
 download weight
 ```bash
 cd /home/ros2_ws/src/spacer_floating_platform_ros2/rans_ros2
-https://drive.google.com/file/d/1M_zCYP5VczzJq0TZ1VaAcsgRxW2v_Wcf/view?usp=drive_link
 wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1M_zCYP5VczzJq0TZ1VaAcsgRxW2v_Wcf' -O runs.zip
 unzip runs.zip && rm runs.zip
 ```
@@ -35,10 +34,14 @@ cd /home/ros2_ws
 source install/setup.bash
 ```
 
-run command
+run command (with default ros2 topic name)
 ```bash
 ros2 run rans_ros2 RL_player task=MFP_eval/MFP2D_CloseProximityDock_perturbed \
 train=MFP/MFP2D_PPOmulti_dict_MLP_dock hl_task=CloseProximityDock \
-checkpoint=/home/ros2_ws/src/spacer_floating_platform_ros2/rans_ros2/runs/MFP2D_perturbed_v2/nn/last_MFP2D_perturbed_v2_ep_2000_rew__113.11344_.pth --ros-args --params-file /home/ros2_ws/src/spacer_floating_platform_ros2/rans_ros2/config/config.yaml
+checkpoint=/home/ros2_ws/src/spacer_floating_platform_ros2/rans_ros2/runs/MFP2D_perturbed/nn/docking.pth
+```
+If you want to change topic name, add the following arguments.
+```bash
+ros2 run rans_ros2 .... ros.state_pose_topic={/topic_name} ros.goal_pose_topic={/topic_name} ros.action_topic={/topic_name}
 ```
 </details>

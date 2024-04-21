@@ -24,7 +24,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'FloatingPlatformDirectValveControl = floating_platform_control.FloatingPlatformDirectValveControl:main'
+            'fp_valve_controller = floating_platform_control.fp_valve_controller:main',
         ],
     },
 )

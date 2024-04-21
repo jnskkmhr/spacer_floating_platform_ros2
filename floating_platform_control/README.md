@@ -23,9 +23,14 @@ source workspace
 source install/setup.bash
 ```
 
-run command
+run command (jetson orin nano)
 ```bash
-ros2 launch spacer_floating_platform valve_control.launch.py
+ros2 launch floating_platform_control fp_valve_control.launch.py
+```
+
+run command (rasberry Pi4)
+```bash
+ros2 launch floating_platform_control fp_valve_control_rpi.launch.py
 ```
 </details>
 
@@ -39,6 +44,6 @@ source install/setup.bash
 
 run command
 ```bash
-ros2 launch spacer_floating_platform optitrack_motion_capture.launch.py
+ros2 launch floating_platform_control optitrack.launch.py
 ```
 </details>

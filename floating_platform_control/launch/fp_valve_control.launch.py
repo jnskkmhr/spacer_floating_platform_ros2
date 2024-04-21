@@ -20,8 +20,8 @@ def generate_launch_description():
     fp_node = Node(
             package='floating_platform_control',
             namespace=ns,
-            executable='FloatingPlatformDirectValveControl',
-            name='FloatingPlatformDirectValveControl',
+            executable='fp_valve_controller',
+            name='fp_valve_controller',
             output='screen',
             parameters = [config], 
         )
