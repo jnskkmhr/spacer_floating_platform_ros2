@@ -5,7 +5,7 @@ We have following packages:
 - `floating_platform_control`: ROS2 package to deal with FP hardware
 
 ## docker container
-We support docker to run ros nodes.
+We support docker to run programs in ros2 humble environment.
 
 Before you start, make sure your default docker runtime is nvidia.
 Open `/etc/docker/daemon.json` and edit it like the following.
@@ -35,8 +35,7 @@ cd {/path/to/this/package}
 ./docker/run_docker.sh
 ```
 
-**NOTE** that current docker does not support rl-games on jetson. \
-This is due to some library conflicts such as mujoco. 
+**NOTE** that docker support on jetson is under development.
 
 ## Run node
 See README of each packages.

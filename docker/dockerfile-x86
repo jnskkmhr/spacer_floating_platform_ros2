@@ -1,4 +1,4 @@
-FROM osrf/ros:foxy-desktop
+FROM osrf/ros:humble-desktop
 
 # Standard package
 RUN apt-get update && apt-get install -y git vim wget curl byobu zip unzip
@@ -21,11 +21,8 @@ RUN git clone https://github.com/AntoineRichard/rl_games.git
 WORKDIR /home/thirdparty/rl_games
 RUN pip3 install -e .
 
-# extra ROS packages
-ENV ROS_DISTRO foxy
-RUN apt install -y \
-ros-$ROS_DISTRO-realsense2-* \
-ros-$ROS_DISTRO-vrpn-mocap
+# eROS Distro
+ENV ROS_DISTRO humble
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]

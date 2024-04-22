@@ -52,6 +52,6 @@ hydra:
     dir: .
 
 ros:
-  state_pose_topic: /spacer_floating_platform/pose
-  goal_pose_topic: /spacer_goal_platform/pose
+  state_pose_topic: /spacer_floating_platform/FP_B/pose
+  goal_pose_topic: /spacer_floating_platform/FP_exp_RL/pose
   action_topic: /spacer_floating_platform/valves/input

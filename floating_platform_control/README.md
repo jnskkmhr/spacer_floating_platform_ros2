@@ -3,7 +3,7 @@
 ## 1. Build (Only native install)
 First install optitrack motion capture package via apt
 ```bash
-apt-get install ros-$ROS_DISTRO-vrpn-mocap
+sudo apt-get install ros-$ROS_DISTRO-vrpn-mocap
 ```
 
 Then install dependencies via rosdep and build package.
