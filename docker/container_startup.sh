@@ -2,6 +2,7 @@
 
 # install ros2 dependencies
 cd /home/ros2_ws
+rosdep init
 rosdep update && rosdep install --from-paths src -yi
 
 # build package

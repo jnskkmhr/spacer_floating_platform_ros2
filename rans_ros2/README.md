@@ -7,7 +7,7 @@ Install dependencies
 ```bash
 cd /home/ros2_ws
 rosdep update && rosdep install --from-paths src -yi
-pip3 install cvxpy hydra-core omegaconf mujoco
+pip3 install hydra-core omegaconf mujoco
 cd ../thirdparty/rl_games && pip3 install -e .
 ```
 
