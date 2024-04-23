@@ -29,7 +29,6 @@ class RLPlayerNode(Node):
         self,
         hl_controller: Union[PositionController, PoseController, VelocityTracker, DockController],
         cfg: dict,
-        map: List[int] = [2, 5, 4, 7, 6, 1, 0, 3],
         debug: bool = False,
     ) -> None:
         """
@@ -65,7 +64,7 @@ class RLPlayerNode(Node):
         self.time_buffer = deque(maxlen=self.buffer_size)
 
         self.debug = debug
-        self.map = map
+        self.map = cfg["platform"]["map"]
         self.hl_controller = hl_controller
         self.reset()
 
@@ -190,7 +189,7 @@ class RLPlayerNode(Node):
         """
         self.state = self.getObs()
         self.action = self.hl_controller.getAction(self.state, time=run_time)
-        # action = self.remap_actions(self.action)
+        action = self.remap_actions(self.action)
         action = self.action
         lifting_active = 1
         action.insert(0, lifting_active)

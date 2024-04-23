@@ -44,4 +44,10 @@ If you want to change topic name, add the following arguments.
 ```bash
 ros2 run rans_ros2 .... ros.state_pose_topic={/topic_name} ros.goal_pose_topic={/topic_name} ros.action_topic={/topic_name}
 ```
+
+If you want to change thruster mapping (mapping from thruster index to action index), specify mapping list like the following:
+```bash
+ros2 run rans_ros2 .... platform.map=[....]
+```
+
 </details>

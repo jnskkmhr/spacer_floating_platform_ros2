@@ -145,7 +145,7 @@ class RLGamesModel:
             self.mode = mode
         elif mode == 6:
             #TODO: remove hardcoding
-            fp_footprint_radius = 0.31+0.01
+            fp_footprint_radius = 0.31+0.31+0.01
             siny_cosp = 2 * target_heading[0] * target_heading[3]
             cosy_cosp = 1 - 2 * (target_heading[3] * target_heading[3])
             target_heading_angle = np.arctan2(siny_cosp, cosy_cosp)
