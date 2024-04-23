@@ -10,6 +10,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Int16MultiArray
 from geometry_msgs.msg import PoseStamped
+# from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 
 from rans_ros2.ros.ros_utils import derive_velocities
 from rans_ros2.mujoco_envs.controllers.hl_controllers import (
@@ -66,25 +67,29 @@ class RLPlayerNode(Node):
         self.debug = debug
         self.map = cfg["platform"]["map"]
         self.hl_controller = hl_controller
-        self.reset()
 
         # Initialize Subscriber and Publisher
         self.pos_sub = self.create_subscription(PoseStamped, 
                                                 self.cfg['ros']['state_pose_topic'], 
                                                 self.pose_callback, 
-                                                10)
+                                                1
+                                                )
         
         self.goal_sub = self.create_subscription(PoseStamped, 
                                                 self.cfg['ros']['goal_pose_topic'], 
                                                 self.goal_callback, 
-                                                10)
+                                                1
+                                                )
         
         self.action_pub = self.create_publisher(Int16MultiArray, 
                                                 self.cfg['ros']['action_topic'], 
-                                                10)
+                                                1
+                                                )
 
         # Initialize ROS message for thrusters
         self.thruster_msg = Int16MultiArray()
+
+        self.reset()
     
     def on_shutdown(self):
         """
@@ -192,8 +197,8 @@ class RLPlayerNode(Node):
         action = self.remap_actions(self.action)
         action = self.action
         lifting_active = 1
-        action.insert(0, lifting_active)
-        self.thruster_msg.data = action
+        np.insert(action, 0, lifting_active)
+        self.thruster_msg.data = action.tolist()
         self.action_pub.publish(self.thruster_msg)
 
     def print_logs(self) -> None:
@@ -206,14 +211,13 @@ class RLPlayerNode(Node):
     
     @staticmethod
     def clock_to_sec(clock:rclpy.time.Time)->float:
-        sec, nsec = clock.seconds_nanoseconds()
-        return sec + nsec*10e-9
+        nsec = clock.nanoseconds
+        return nsec*10e-10
     
     def run(self) -> None:
         """
         Runs the RL algorithm."""
         self.update_once = True
-        self.rate = self.create_rate(self.play_rate)
         start_time = self.clock_to_sec(self.get_clock().now())
         run_time = self.clock_to_sec(self.get_clock().now()) - start_time
         while (rclpy.ok()) and (run_time < self.run_time):
@@ -223,4 +227,3 @@ class RLPlayerNode(Node):
                 if self.debug:
                     self.print_logs()
             run_time = self.clock_to_sec(self.get_clock().now()) - start_time
-            self.rate.sleep()

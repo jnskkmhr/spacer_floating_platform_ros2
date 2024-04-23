@@ -14,9 +14,11 @@ from rans_ros2.utils.hydra_utils import *
 from omegaconf import DictConfig, OmegaConf
 import hydra
 import os
+from threading import Thread
 
 # rclpy
 import rclpy
+from rclpy.executors import SingleThreadedExecutor as Executor
 
 # custom lib
 from rans_ros2.mujoco_envs.controllers.discrete_LQR_controller import (
@@ -70,6 +72,11 @@ def main(cfg: DictConfig):
         cfg=cfg_dict,
         debug=True,
     )
+
+    exec = Executor()
+    exec.add_node(node)
+    callback_thread = Thread(target=exec.spin, daemon=True, args=())
+    callback_thread.start()
     
     # Run the node.
     try:

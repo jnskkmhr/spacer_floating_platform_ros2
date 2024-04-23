@@ -37,20 +37,6 @@ checkpoint: ''
 wandb_activate: False
 use_rl: True
 
-# set default task and default training config based on task
-defaults:
-  - task: virtual_floating_platform/MFP2D_Virtual_GoToXY
-  - train: virtual_floating_platform/MFP2D_PPOmulti_dict_MLP
-  - controller: Optimal_LQR_DC
-  - hl_task: GoToXY_Square
-  - hydra/job_logging: disabled
-
-# set the directory where the output files get saved
-hydra:
-  output_subdir: null
-  run:
-    dir: .
-
 ros:
   state_pose_topic: /spacer_floating_platform/FP_B/pose
   goal_pose_topic: /spacer_floating_platform/FP_exp_RL/pose
@@ -59,3 +45,18 @@ ros:
 platform:
   map: [0, 1, 2, 3, 4, 5, 6, 7] #jetson
   # map: [2, 5, 4, 7, 6, 1, 0, 3] #rpi4
+
+# set default task and default training config based on task
+defaults:
+  - _self_
+  - task: virtual_floating_platform/MFP2D_Virtual_GoToXY
+  - train: virtual_floating_platform/MFP2D_PPOmulti_dict_MLP
+  - controller: Optimal_LQR_DC
+  - hl_task: GoToXY_Square
+  - overrride hydra/job_logging: disabled
+
+# set the directory where the output files get saved
+hydra:
+  output_subdir: null
+  run:
+    dir: .

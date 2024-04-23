@@ -20,6 +20,8 @@ def angular_velocities(q:np.ndarray, dt:np.ndarray, N:int=1) -> np.ndarray:
         q[:-1,0]*q[1:,2] + q[:-1,1]*q[1:,3] - q[:-1,2]*q[1:,0] - q[:-1,3]*q[1:,1],
         q[:-1,0]*q[1:,3] - q[:-1,1]*q[1:,2] + q[:-1,2]*q[1:,1] - q[:-1,3]*q[1:,0]])
 
+def derive_sec(time)->float:
+    return time.sec + time.nanosec * 1e-10
 
 def derive_velocities(time_buffer:list, pose_buffer: list) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -32,7 +34,7 @@ def derive_velocities(time_buffer:list, pose_buffer: list) -> Tuple[np.ndarray, 
     Returns:
         Tuple(np.ndarray, np.ndarray): The linear and angular velocities."""
     
-    dt = (time_buffer[-1] - time_buffer[0]).to_sec() # Time difference between first and last pose
+    dt = derive_sec(time_buffer[-1]) - derive_sec(time_buffer[0]) # Time difference between first and last pose
     # Calculate linear velocities
     linear_positions = np.array([[pose.pose.position.x, pose.pose.position.y, pose.pose.position.z] for pose in pose_buffer])
     linear_velocities = np.diff(linear_positions, axis=0) / (dt/len(time_buffer))
