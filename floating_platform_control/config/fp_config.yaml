@@ -4,4 +4,4 @@ spacer_floating_platform: #namespace
       device: 'jetson'
       topic_name: 'valves/input'
       gpio_mode: 'BOARD'
-      gpio_ids: [7, 24, 26, 31, 29, 23, 21, 15, 19] #(B9, T1, T2, ..., T8)
+      gpio_ids: [7, 24, 26, 31, 29, 23, 21, 19, 15] #(B9, T1, T2, ..., T8)
