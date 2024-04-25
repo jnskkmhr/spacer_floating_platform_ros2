@@ -39,7 +39,9 @@ use_rl: True
 
 ros:
   state_pose_topic: /spacer_floating_platform/FP_B/pose
+  # state_pose_topic: /spacer_floating_platform/FP_exp_RL/pose
   goal_pose_topic: /spacer_floating_platform/FP_exp_RL/pose
+  # goal_pose_topic: /spacer_floating_platform/FP_B/pose
   action_topic: /spacer_floating_platform/valves/input
 
 platform:

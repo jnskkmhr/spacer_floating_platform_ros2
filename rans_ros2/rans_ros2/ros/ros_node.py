@@ -197,7 +197,7 @@ class RLPlayerNode(Node):
         action = self.remap_actions(self.action)
         action = self.action
         lifting_active = 1
-        np.insert(action, 0, lifting_active)
+        action = np.insert(action, 0, lifting_active)
         self.thruster_msg.data = action.tolist()
         self.action_pub.publish(self.thruster_msg)
 
@@ -218,6 +218,7 @@ class RLPlayerNode(Node):
         """
         Runs the RL algorithm."""
         self.update_once = True
+        self.rate = self.create_rate(self.play_rate, self.get_clock())
         start_time = self.clock_to_sec(self.get_clock().now())
         run_time = self.clock_to_sec(self.get_clock().now()) - start_time
         while (rclpy.ok()) and (run_time < self.run_time):
@@ -227,3 +228,4 @@ class RLPlayerNode(Node):
                 if self.debug:
                     self.print_logs()
             run_time = self.clock_to_sec(self.get_clock().now()) - start_time
+            self.rate.sleep()

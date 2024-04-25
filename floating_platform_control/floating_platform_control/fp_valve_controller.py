@@ -65,7 +65,6 @@ class FloatingPlatformDirectValveControl(Node):
         self.register_param()
         # Initialize GPIO and valve
         self.gpio = FloatingPlatformGPIO(self.get_param("device"), self.get_param("gpio_mode"), self.get_param("gpio_ids"))
-        self.gpio.valves(self.gpio.gpio_ids, [0,0,0,0,0,0,0,0,0])
         # Register subscriber
         self.subscriber = self.create_subscription(Int16MultiArray, self.get_param("topic_name"), self.valve_callback, 10)
     
@@ -99,6 +98,7 @@ class FloatingPlatformDirectValveControl(Node):
         Custom shutdown hook.
         It turns off air-bearing and valves.
         """
+        self.gpio.valves(self.gpio.gpio_ids, [1,0,0,0,0,0,0,0,0])
         self.gpio.valves(self.gpio.gpio_ids, [0,0,0,0,0,0,0,0,0])
 
 def main(args=None):

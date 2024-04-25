@@ -13,7 +13,7 @@ lab_usd_path: robots/usd/zero_g_lab.usd
 env:
   numEnvs: ${resolve_default:64,${...num_envs}}
   envSpacing: 12
-  maxEpisodeLength: 450
+  maxEpisodeLength: 200
   enableDebugVis: False
   action_mode: MultiDiscrete
   numQuantizedActions: 1
