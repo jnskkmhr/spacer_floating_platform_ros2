@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y git vim wget curl byobu zip unzip
 RUN apt-get update && apt-get install -y python3-colcon-common-extensions python3-rosdep
 
 # Python dependencies
-RUN apt-get install -y python3-pip python3-tk
+RUN apt-get install -y python3-tk
 
 # Python package
 RUN pip3 install hydra-core omegaconf mujoco
