@@ -5,7 +5,7 @@ We have following packages:
 - `floating_platform_control`: ROS2 package to deal with FP hardware
 
 ## docker container
-We support docker to run programs in ros2 humble environment.
+We support docker to run programs in ros2 foxy environment.
 
 Before you start, make sure your default docker runtime is nvidia.
 Open `/etc/docker/daemon.json` and edit it like the following.

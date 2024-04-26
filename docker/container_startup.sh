@@ -2,7 +2,6 @@
 
 # install ros2 dependencies
 cd /home/ros2_ws
-source /venv/bin/activate
 rosdep init
 rosdep update && rosdep install --from-paths src -yi
 
